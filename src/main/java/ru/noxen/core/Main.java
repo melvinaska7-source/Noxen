@@ -101,8 +101,12 @@ public class Main implements ModInitializer {
 
 
     private void initDiscordRPC() {
-        discordManager = new DiscordManager();
+    discordManager = new DiscordManager();
+    try {
         discordManager.init();
+    } catch (Throwable t) {
+        // Discord RPC not available on Android
+    }
     }
 
 
