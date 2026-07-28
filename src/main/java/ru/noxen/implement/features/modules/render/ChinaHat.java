@@ -28,7 +28,7 @@ public class ChinaHat extends Module {
         return Instance.get(ChinaHat.class);
     }
 
-    BooleanSetting self = new BooleanSetting("Self", "Show on yourself").setValue(false);
+    BooleanSetting self = new BooleanSetting("Self", "Show on yourself").setValue(true);
     BooleanSetting others = new BooleanSetting("Others", "Show on other players").setValue(true);
 
     ValueSetting width = new ValueSetting("Width", "Hat radius").setValue(0.6f).range(0.2f, 1.5f);
@@ -40,7 +40,7 @@ public class ChinaHat extends Module {
             .presets(0xFF6C9AFD, 0xFF8C7FFF, 0xFFFFA576, 0xFFFF7B7B)
             .visible(() -> !useClientColor.isValue());
 
-    ValueSetting alpha = new ValueSetting("Alpha", "Transparency").setValue(0.75f).range(0.15f, 1.0f);
+    ValueSetting alpha = new ValueSetting("Alpha", "Transparency").setValue(0.8f).range(0.15f, 1.0f);
 
     public ChinaHat() {
         super("ChinaHat", "China Hat", ModuleCategory.RENDER);
@@ -53,10 +53,9 @@ public class ChinaHat extends Module {
 
         MatrixStack matrices = e.getStack();
         float tickDelta = e.getPartialTicks();
-        Vec3d camera = mc.gameRenderer.getCamera().getPos();
 
         int baseColor = useClientColor.isValue() ? ColorUtil.getClientColor() : colorSetting.getColor();
-        float a = alpha.getValue();
+        float aMul = alpha.getValue();
 
         for (AbstractClientPlayerEntity player : mc.world.getPlayers()) {
             if (player == mc.player) {
@@ -67,15 +66,13 @@ public class ChinaHat extends Module {
             }
             if (!player.isAlive()) continue;
 
-            renderHat(matrices, player, camera, tickDelta, baseColor, a);
+            renderHat(matrices, player, tickDelta, baseColor, aMul);
         }
     }
 
-    private void renderHat(MatrixStack matrices, PlayerEntity player, Vec3d camera, float tickDelta, int color, float alphaMul) {
+    private void renderHat(MatrixStack matrices, PlayerEntity player, float tickDelta, int color, float alphaMul) {
+        // ВАЖНО: без вычитания камеры — stack уже сдвинут
         Vec3d pos = MathUtil.interpolate(player);
-        double x = pos.x - camera.x;
-        double y = pos.y + player.getHeight() + 0.02 - camera.y;
-        double z = pos.z - camera.z;
 
         float radius = width.getValue();
         float coneH = height.getValue();
@@ -86,7 +83,7 @@ public class ChinaHat extends Module {
         int a = (int) (255 * alphaMul);
 
         matrices.push();
-        matrices.translate(x, y, z);
+        matrices.translate(pos.x, pos.y + player.getHeight() + 0.05, pos.z);
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -99,7 +96,6 @@ public class ChinaHat extends Module {
         Tessellator tessellator = Tessellator.getInstance();
         int segments = 32;
 
-        // конус
         BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLES, VertexFormats.POSITION_COLOR);
         for (int i = 0; i < segments; i++) {
             float a1 = (float) (2 * Math.PI * i / segments);
@@ -111,11 +107,10 @@ public class ChinaHat extends Module {
 
             buffer.vertex(matrix, x1, 0, z1).color(r, g, b, a);
             buffer.vertex(matrix, x2, 0, z2).color(r, g, b, a);
-            buffer.vertex(matrix, 0, coneH, 0).color(r, g, b, Math.min(255, a + 30));
+            buffer.vertex(matrix, 0, coneH, 0).color(r, g, b, Math.min(255, a + 40));
         }
         BufferRenderer.drawWithGlobalProgram(buffer.end());
 
-        // дно
         buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
         buffer.vertex(matrix, 0, 0, 0).color(r, g, b, a / 2);
         for (int i = 0; i <= segments; i++) {
