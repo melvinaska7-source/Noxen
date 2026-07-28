@@ -38,7 +38,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    modCompileOnly "meteordevelopment:baritone:1.21.4-SNAPSHOT"
 
     libImpl fileTree(dir: 'libs', include: ['*.jar'])
     libImpl("org.jetbrains.kotlin:kotlin-stdlib:2.0.0")
