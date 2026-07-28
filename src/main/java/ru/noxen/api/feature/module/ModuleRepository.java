@@ -46,7 +46,9 @@ public class ModuleRepository {
                 new NoInteract(),
                 new CrossHair(),
                 new ServerRPSpoofer(),
-                new TargetESP()
+                new TargetESP(),
+                new ChinaHat(),
+                new JumpCircle()
         );
     }
 
