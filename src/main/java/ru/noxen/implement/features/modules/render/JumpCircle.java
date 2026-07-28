@@ -29,17 +29,16 @@ public class JumpCircle extends Module {
         return Instance.get(JumpCircle.class);
     }
 
-    ValueSetting radiusSetting = new ValueSetting("Radius", "Circle radius").setValue(1.0f).range(0.3f, 2.5f);
-    ValueSetting lifetimeSetting = new ValueSetting("Lifetime", "How long circle lives (ms)").setValue(2000).range(800, 4000);
+    ValueSetting radiusSetting = new ValueSetting("Radius", "Circle radius").setValue(1.2f).range(0.3f, 3.0f);
+    ValueSetting lifetimeSetting = new ValueSetting("Lifetime", "Lifetime ms").setValue(2000).range(800, 4000);
 
     BooleanSetting useClientColor = new BooleanSetting("Client Color", "Use HUD color").setValue(true);
     ColorSetting colorSetting = new ColorSetting("Color", "Custom color")
             .setColor(0xFF6C9AFD)
             .visible(() -> !useClientColor.isValue());
 
-    Identifier circleId = Identifier.of("textures/circle.png");
-    // fallback если circle.png нет:
-    Identifier glowId = Identifier.of("textures/glow.png");
+    // используем glow.png — он у тебя точно есть
+    Identifier texId = Identifier.of("textures/circle.png");
 
     CopyOnWriteArrayList<Circle> circles = new CopyOnWriteArrayList<>();
 
@@ -51,8 +50,8 @@ public class JumpCircle extends Module {
     @EventHandler
     public void onJump(JumpEvent e) {
         if (mc.player == null) return;
-        Vec3d pos = mc.player.getPos().add(0, 0.05, 0);
-        circles.add(new Circle(pos, System.currentTimeMillis()));
+        if (e.getPlayer() != mc.player) return;
+        circles.add(new Circle(mc.player.getPos().add(0, 0.05, 0), System.currentTimeMillis()));
     }
 
     @EventHandler
@@ -64,7 +63,6 @@ public class JumpCircle extends Module {
         float baseRadius = radiusSetting.getValue();
         int baseColor = useClientColor.isValue() ? ColorUtil.getClientColor() : colorSetting.getColor();
 
-        Vec3d camera = mc.gameRenderer.getCamera().getPos();
         MatrixStack matrices = e.getStack();
 
         RenderSystem.enableBlend();
@@ -72,10 +70,7 @@ public class JumpCircle extends Module {
         RenderSystem.depthMask(false);
         RenderSystem.disableCull();
         RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX_COLOR);
-
-        Identifier tex = circleId;
-        // если хочешь всегда glow — замени на glowId
-        RenderSystem.setShaderTexture(0, tex);
+        RenderSystem.setShaderTexture(0, texId);
 
         for (Circle c : circles) {
             long age = now - c.time;
@@ -86,22 +81,23 @@ public class JumpCircle extends Module {
 
             float progress = age / (float) life;
             float fade = 1f - progress;
-            float rad = baseRadius * (0.3f + progress * 1.2f);
+            float rad = baseRadius * (0.25f + progress * 1.4f);
 
-            double x = c.pos.x - camera.x - rad / 2.0;
-            double y = c.pos.y - camera.y;
-            double z = c.pos.z - camera.z - rad / 2.0;
+            // БЕЗ вычитания камеры
+            float x = (float) (c.pos.x - rad / 2.0);
+            float y = (float) c.pos.y;
+            float z = (float) (c.pos.z - rad / 2.0);
 
-            int color = ColorUtil.multAlpha(baseColor, fade);
+            int color = ColorUtil.multAlpha(baseColor, fade * 0.9f);
 
             matrices.push();
             Matrix4f matrix = matrices.peek().getPositionMatrix();
 
             BufferBuilder buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-            buffer.vertex(matrix, (float) x, (float) y, (float) z).texture(0, 0).color(color);
-            buffer.vertex(matrix, (float) (x + rad), (float) y, (float) z).texture(1, 0).color(color);
-            buffer.vertex(matrix, (float) (x + rad), (float) y, (float) (z + rad)).texture(1, 1).color(color);
-            buffer.vertex(matrix, (float) x, (float) y, (float) (z + rad)).texture(0, 1).color(color);
+            buffer.vertex(matrix, x, y, z).texture(0, 0).color(color);
+            buffer.vertex(matrix, x + rad, y, z).texture(1, 0).color(color);
+            buffer.vertex(matrix, x + rad, y, z + rad).texture(1, 1).color(color);
+            buffer.vertex(matrix, x, y, z + rad).texture(0, 1).color(color);
             BufferRenderer.drawWithGlobalProgram(buffer.end());
 
             matrices.pop();
