@@ -25,8 +25,8 @@ public class HitBubbles extends Module implements QuickImports {
         return ru.noxen.common.util.other.Instance.get(HitBubbles.class);
     }
 
-    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Пузырей за удар").range(1, 25).value(8);
-    public final ValueSetting sizeSetting = new ValueSetting("Размер", "Размер пузыря").range(0.04f, 0.3f).value(0.12f);
+    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Пузырей за удар").range(1, 25).setValue(8);
+    public final ValueSetting sizeSetting = new ValueSetting("Размер", "Размер пузыря").range(0.04f, 0.3f).setValue(0.12f);
 
     private final Identifier bubbleTexture = Identifier.of("minecraft", "textures/bubble.png");
     private final CopyOnWriteArrayList<Bubble> bubbles = new CopyOnWriteArrayList<>();
@@ -51,7 +51,7 @@ public class HitBubbles extends Module implements QuickImports {
     public void onRender(WorldRenderEvent e) {
         if (bubbles.isEmpty()) return;
 
-        MatrixStack matrix = e.getMatrix();
+        MatrixStack matrix = e.getStack();
         Vec3d cam = mc.gameRenderer.getCamera().getPos();
 
         RenderSystem.enableBlend();
@@ -61,7 +61,7 @@ public class HitBubbles extends Module implements QuickImports {
         RenderSystem.setShader(net.minecraft.client.gl.ShaderProgramKeys.POSITION_TEX_COLOR);
 
         bubbles.removeIf(b -> {
-            b.tick(e.getTickDelta());
+            b.tick(e.getPartialTicks());
             return b.isDead();
         });
 
@@ -129,3 +129,4 @@ public class HitBubbles extends Module implements QuickImports {
         }
     }
 }
+

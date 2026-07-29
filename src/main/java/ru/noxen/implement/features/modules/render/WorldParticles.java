@@ -1,3 +1,4 @@
+
 package ru.noxen.implement.features.modules.render;
 
 import ru.noxen.api.feature.module.Module;
@@ -28,8 +29,8 @@ public class WorldParticles extends Module implements QuickImports {
     public final MultiSelectSetting typeSetting = new MultiSelectSetting("Вид", "Выбери текстуру")
             .value("Доллары", "Снежинки", "Орбизы", "Звёзды", "Пузыри");
 
-    public final ValueSetting countSetting = new ValueSetting("Макс. частиц", "Сколько летает вокруг").range(5, 80).value(30);
-    public final ValueSetting radiusSetting = new ValueSetting("Радиус", "Радиус появления").range(1, 8).value(3);
+    public final ValueSetting countSetting = new ValueSetting("Макс. частиц", "Сколько летает вокруг").range(5, 80).setValue(30);
+    public final ValueSetting radiusSetting = new ValueSetting("Радиус", "Радиус появления").range(1, 8).setValue(3);
 
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
@@ -66,7 +67,7 @@ public class WorldParticles extends Module implements QuickImports {
     public void onRender(WorldRenderEvent e) {
         if (mc.player == null) return;
 
-        MatrixStack matrix = e.getMatrix();
+        MatrixStack matrix = e.getStack();
         Vec3d cam = mc.gameRenderer.getCamera().getPos();
         Identifier texture = getTexture();
 
@@ -77,7 +78,7 @@ public class WorldParticles extends Module implements QuickImports {
         RenderSystem.setShader(net.minecraft.client.gl.ShaderProgramKeys.POSITION_TEX_COLOR);
 
         for (Particle p : particles) {
-            p.tick(e.getTickDelta());
+            p.tick(e.getPartialTicks());
 
             matrix.push();
             matrix.translate(p.pos.x - cam.x, p.pos.y - cam.y, p.pos.z - cam.z);

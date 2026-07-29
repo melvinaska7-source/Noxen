@@ -29,7 +29,7 @@ public class HitParticles extends Module implements QuickImports {
     public final MultiSelectSetting typeSetting = new MultiSelectSetting("Вид", "Выбери текстуру")
             .value("Доллары", "Снежинки", "Орбизы", "Звёзды", "Пузыри");
 
-    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Частиц за удар").range(1, 40).value(15);
+    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Частиц за удар").range(1, 40).setValue(15);
 
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
@@ -49,7 +49,7 @@ public class HitParticles extends Module implements QuickImports {
 
     @EventHandler
     public void onRender(WorldRenderEvent e) {
-        MatrixStack matrix = e.getMatrix();
+        MatrixStack matrix = e.getStack();
         Vec3d cam = mc.gameRenderer.getCamera().getPos();
 
         Identifier texture = getTexture();
@@ -61,7 +61,7 @@ public class HitParticles extends Module implements QuickImports {
         RenderSystem.setShader(net.minecraft.client.gl.ShaderProgramKeys.POSITION_TEX_COLOR);
 
         particles.removeIf(p -> {
-            p.tick(e.getTickDelta());
+            p.tick(e.getPartialTicks());
             return p.isDead();
         });
 
@@ -137,3 +137,4 @@ public class HitParticles extends Module implements QuickImports {
         }
     }
 }
+
