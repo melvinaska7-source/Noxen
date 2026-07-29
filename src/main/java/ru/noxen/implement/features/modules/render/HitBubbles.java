@@ -52,7 +52,6 @@ public class HitBubbles extends Module implements QuickImports {
         if (bubbles.isEmpty()) return;
 
         MatrixStack matrix = e.getStack();
-        Vec3d cam = mc.gameRenderer.getCamera().getPos();
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -67,7 +66,7 @@ public class HitBubbles extends Module implements QuickImports {
 
         for (Bubble b : bubbles) {
             matrix.push();
-            matrix.translate(b.pos.x - cam.x, b.pos.y - cam.y, b.pos.z - cam.z);
+            matrix.translate(b.pos.x, b.pos.y, b.pos.z);
             matrix.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Y.rotationDegrees(-mc.gameRenderer.getCamera().getYaw()));
             matrix.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_X.rotationDegrees(mc.gameRenderer.getCamera().getPitch()));
 

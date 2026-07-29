@@ -50,7 +50,6 @@ public class HitParticles extends Module implements QuickImports {
     @EventHandler
     public void onRender(WorldRenderEvent e) {
         MatrixStack matrix = e.getStack();
-        Vec3d cam = mc.gameRenderer.getCamera().getPos();
 
         Identifier texture = getTexture();
 
@@ -67,7 +66,7 @@ public class HitParticles extends Module implements QuickImports {
 
         for (Particle p : particles) {
             matrix.push();
-            matrix.translate(p.pos.x - cam.x, p.pos.y - cam.y, p.pos.z - cam.z);
+            matrix.translate(p.pos.x, p.pos.y, p.pos.z);
             matrix.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Y.rotationDegrees(-mc.gameRenderer.getCamera().getYaw()));
             matrix.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_X.rotationDegrees(mc.gameRenderer.getCamera().getPitch()));
 
