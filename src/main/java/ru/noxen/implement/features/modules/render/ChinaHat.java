@@ -43,7 +43,7 @@ public class ChinaHat extends Module {
     ValueSetting alpha = new ValueSetting("Alpha", "Transparency").setValue(0.8f).range(0.15f, 1.0f);
 
     public ChinaHat() {
-        super("ChinaHat", "China Hat", ModuleCategory.RENDER);
+        super("ChinaHat", "Китайская шляпа", ModuleCategory.RENDER);
         setup(self, others, width, height, useClientColor, colorSetting, alpha);
     }
 

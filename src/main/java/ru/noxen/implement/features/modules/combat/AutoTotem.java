@@ -38,7 +38,7 @@ public class AutoTotem extends Module {
     Script script = new Script();
 
     public AutoTotem() {
-        super("AutoTotem", "Auto Totem", ModuleCategory.COMBAT);
+        super("AutoTotem", "Авто-тотем", ModuleCategory.COMBAT);
         setup(healthSetting, triggerSetting, TNTRangeSetting);
     }
 

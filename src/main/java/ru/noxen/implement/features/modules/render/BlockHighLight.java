@@ -20,7 +20,7 @@ public class BlockHighLight extends Module {
     }
 
     public BlockHighLight() {
-        super("BlockHighLight", "Block Overlay", ModuleCategory.RENDER);
+        super("BlockHighLight", "Подсветка блока", ModuleCategory.RENDER);
     }
 
     @EventHandler

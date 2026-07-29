@@ -43,7 +43,7 @@ public class JumpCircle extends Module {
     CopyOnWriteArrayList<Circle> circles = new CopyOnWriteArrayList<>();
 
     public JumpCircle() {
-        super("JumpCircle", "Jump Circle", ModuleCategory.RENDER);
+        super("JumpCircle", "Круг при прыжке", ModuleCategory.RENDER);
         setup(radiusSetting, lifetimeSetting, useClientColor, colorSetting);
     }
 

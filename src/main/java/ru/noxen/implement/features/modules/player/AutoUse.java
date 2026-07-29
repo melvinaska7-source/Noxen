@@ -24,7 +24,7 @@ public class AutoUse extends Module {
     MultiSelectSetting multiSetting = new MultiSelectSetting("Mode", "Choose what will be used").value("Eat", "Invisibility");
 
     public AutoUse() {
-        super("AutoUse", "Auto Use", ModuleCategory.PLAYER);
+        super("AutoUse", "Авто-использование", ModuleCategory.PLAYER);
         setup(multiSetting);
     }
 

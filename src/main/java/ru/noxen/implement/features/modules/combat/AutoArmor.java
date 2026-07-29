@@ -31,7 +31,7 @@ import java.util.*;
 public class AutoArmor extends Module {
 
     public AutoArmor() {
-        super("AutoArmor", "Auto Armor", ModuleCategory.PLAYER);
+        super("AutoArmor", "Авто-броня", ModuleCategory.PLAYER);
         setup();
     }
 

@@ -27,7 +27,7 @@ public class AutoSprint extends Module {
             .setValue(true);
 
     public AutoSprint() {
-        super("AutoSprint", "Auto Sprint", ModuleCategory.MOVEMENT);
+        super("AutoSprint", "Авто-спринт", ModuleCategory.MOVEMENT);
         setup(keepSprintSetting, ignoreHungerSetting);
     }
 

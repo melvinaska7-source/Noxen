@@ -34,7 +34,7 @@ public class HitParticles extends Module implements QuickImports {
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
     public HitParticles() {
-        super("HitParticles", "Hit Particles", ModuleCategory.RENDER);
+        super("HitParticles", "Частицы при ударе", ModuleCategory.RENDER);
         setup(typeSetting, countSetting);
     }
 

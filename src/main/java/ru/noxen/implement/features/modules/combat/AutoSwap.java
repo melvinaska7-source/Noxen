@@ -29,7 +29,7 @@ public class AutoSwap extends Module {
             .value("Totem of Undying", "Player Head", "Golden Apple", "Shield");
 
     public AutoSwap() {
-        super("AutoSwap", "Auto Swap", ModuleCategory.COMBAT);
+        super("AutoSwap", "Авто-замена предмета", ModuleCategory.COMBAT);
         setup(firstItem, secondItem, bind);
     }
 

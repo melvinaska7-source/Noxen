@@ -32,7 +32,7 @@ public class AutoTool extends Module {
     private BlockPos lastBreakPos;
 
     public AutoTool() {
-        super("AutoTool", "Auto Tool", ModuleCategory.PLAYER);
+        super("AutoTool", "Авто-инструмент", ModuleCategory.PLAYER);
     }
 
     @EventHandler

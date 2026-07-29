@@ -52,7 +52,7 @@ public class HandTweaks extends Module {
             .setValue(1.0F).range(0.5F, 2.0F);
 
     public HandTweaks() {
-        super("HandTweaks", "Swing Animation", ModuleCategory.RENDER);
+        super("HandTweaks", "Анимация удара", ModuleCategory.RENDER);
         setup(swingGroup, offsetGroup, swingSpeedSetting);
     }
 
