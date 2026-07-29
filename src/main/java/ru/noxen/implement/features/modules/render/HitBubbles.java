@@ -2,7 +2,7 @@ package ru.noxen.implement.features.modules.render;
 
 import ru.noxen.api.feature.module.Module;
 import ru.noxen.api.feature.module.ModuleCategory;
-import ru.noxen.api.feature.module.setting.implement.SliderSetting;
+import ru.noxen.api.feature.module.setting.implement.ValueSetting;
 import ru.noxen.common.QuickImports;
 import ru.noxen.common.util.color.ColorUtil;
 import ru.noxen.implement.events.player.AttackEvent;
@@ -25,8 +25,8 @@ public class HitBubbles extends Module implements QuickImports {
         return ru.noxen.common.util.other.Instance.get(HitBubbles.class);
     }
 
-    public final SliderSetting countSetting = new SliderSetting("Кол-во", "Пузырей за удар", 8, 1, 25, 1);
-    public final SliderSetting sizeSetting = new SliderSetting("Размер", "Размер пузыря", 0.12f, 0.04f, 0.3f, 0.01f);
+    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Пузырей за удар").range(1, 25).value(8);
+    public final ValueSetting sizeSetting = new ValueSetting("Размер", "Размер пузыря").range(0.04f, 0.3f).value(0.12f);
 
     private final Identifier bubbleTexture = Identifier.of("minecraft", "textures/bubble.png");
     private final CopyOnWriteArrayList<Bubble> bubbles = new CopyOnWriteArrayList<>();

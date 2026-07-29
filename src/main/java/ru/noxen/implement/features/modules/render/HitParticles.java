@@ -3,7 +3,7 @@ package ru.noxen.implement.features.modules.render;
 import ru.noxen.api.feature.module.Module;
 import ru.noxen.api.feature.module.ModuleCategory;
 import ru.noxen.api.feature.module.setting.implement.MultiSelectSetting;
-import ru.noxen.api.feature.module.setting.implement.SliderSetting;
+import ru.noxen.api.feature.module.setting.implement.ValueSetting;
 import ru.noxen.common.QuickImports;
 import ru.noxen.common.util.color.ColorUtil;
 import ru.noxen.implement.events.player.AttackEvent;
@@ -29,7 +29,7 @@ public class HitParticles extends Module implements QuickImports {
     public final MultiSelectSetting typeSetting = new MultiSelectSetting("Вид", "Выбери текстуру")
             .value("Доллары", "Снежинки", "Орбизы", "Звёзды", "Пузыри");
 
-    public final SliderSetting countSetting = new SliderSetting("Кол-во", "Частиц за удар", 15, 1, 40, 1);
+    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Частиц за удар").range(1, 40).value(15);
 
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 

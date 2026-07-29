@@ -3,7 +3,7 @@ package ru.noxen.implement.features.modules.render;
 import ru.noxen.api.feature.module.Module;
 import ru.noxen.api.feature.module.ModuleCategory;
 import ru.noxen.api.feature.module.setting.implement.MultiSelectSetting;
-import ru.noxen.api.feature.module.setting.implement.SliderSetting;
+import ru.noxen.api.feature.module.setting.implement.ValueSetting;
 import ru.noxen.common.QuickImports;
 import ru.noxen.common.util.color.ColorUtil;
 import ru.noxen.implement.events.render.WorldRenderEvent;
@@ -28,8 +28,8 @@ public class WorldParticles extends Module implements QuickImports {
     public final MultiSelectSetting typeSetting = new MultiSelectSetting("Вид", "Выбери текстуру")
             .value("Доллары", "Снежинки", "Орбизы", "Звёзды", "Пузыри");
 
-    public final SliderSetting countSetting = new SliderSetting("Макс. частиц", "Сколько летает вокруг", 30, 5, 80, 5);
-    public final SliderSetting radiusSetting = new SliderSetting("Радиус", "Радиус появления", 3, 1, 8, 1);
+    public final ValueSetting countSetting = new ValueSetting("Макс. частиц", "Сколько летает вокруг").range(5, 80).value(30);
+    public final ValueSetting radiusSetting = new ValueSetting("Радиус", "Радиус появления").range(1, 8).value(3);
 
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
