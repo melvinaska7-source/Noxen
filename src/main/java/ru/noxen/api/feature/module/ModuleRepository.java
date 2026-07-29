@@ -49,6 +49,7 @@ public class ModuleRepository {
                 new TargetESP(),
                 new ChinaHat(),
                 new JumpCircle(),
+                new HitBubbles(),
                 new HitParticles(),
                 new WorldParticles()
         );
