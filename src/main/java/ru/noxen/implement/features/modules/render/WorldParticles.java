@@ -35,7 +35,7 @@ public class WorldParticles extends Module implements QuickImports {
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
     public WorldParticles() {
-        super("WorldParticles", "Частицы вокруг игрока", ModuleCategory.RENDER);
+        super("WorldParticles", "WorldParticles", ModuleCategory.RENDER);
         setup(typeSetting, countSetting, radiusSetting);
     }
 

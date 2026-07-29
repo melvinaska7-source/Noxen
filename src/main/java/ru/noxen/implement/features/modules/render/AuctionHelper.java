@@ -38,7 +38,7 @@ public class AuctionHelper extends Module {
             .setColor(0xFFFF4B4B).presets(RED_GREEN_COLORS);
 
     public AuctionHelper() {
-        super("AuctionHelper", "Помощник аукциона", ModuleCategory.RENDER);
+        super("AuctionHelper", "AH Helper", ModuleCategory.RENDER);
         setup(cheapestItemColorSetting, costEffectiveItemColorSetting);
     }
 

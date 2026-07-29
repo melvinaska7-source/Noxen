@@ -61,7 +61,7 @@ public class TargetESP extends Module {
     BooleanSetting animals = new BooleanSetting("Animals", "Show on animals").setValue(true);
 
     public TargetESP() {
-        super("TargetESP", "Подсветка цели", ModuleCategory.RENDER);
+        super("TargetESP", "TargetESP", ModuleCategory.RENDER);
         setup(type, sizeSetting, speedSetting, brightSetting, useClientColor, colorSetting, players, mobs, animals);
     }
 

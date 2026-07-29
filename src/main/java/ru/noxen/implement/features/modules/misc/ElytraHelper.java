@@ -27,7 +27,7 @@ public class ElytraHelper extends Module {
     Script script = new Script();
 
     public ElytraHelper() {
-        super("ElytraHelper", "Помощник элитры", ModuleCategory.MISC);
+        super("ElytraHelper", "ElytraHelper", ModuleCategory.MISC);
         setup(elytraSetting, fireworkSetting, startSetting);
     }
 

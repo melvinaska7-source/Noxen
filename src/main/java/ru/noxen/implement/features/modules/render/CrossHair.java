@@ -24,7 +24,7 @@ public class CrossHair extends Module {
     private final ValueSetting size2Setting = new ValueSetting("Height", "Height Cross Hair").setValue(1).range(1, 4);
 
     public CrossHair() {
-        super("CrossHair", "Кастомный прицел", ModuleCategory.RENDER);
+        super("CrossHair", "CS CrossHair", ModuleCategory.RENDER);
         setup(attackSetting, indentSetting, size1Setting, size2Setting);
     }
 

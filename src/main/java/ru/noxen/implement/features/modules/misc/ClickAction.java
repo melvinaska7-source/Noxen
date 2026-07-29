@@ -44,7 +44,7 @@ public class ClickAction extends Module {
     Script script = new Script();
 
     public ClickAction() {
-        super("ClickAction","Действия по клику", ModuleCategory.MISC);
+        super("ClickAction","ClickAction", ModuleCategory.MISC);
         keyBindings.add(new KeyBind(Items.ENDER_PEARL, new BindSetting("Ender Pearl", "Throw Ender Pearl"), new BooleanSettable()));
         keyBindings.add(new KeyBind(Items.WIND_CHARGE, new BindSetting("Wind Charge", "Throw Wind Charge"), new BooleanSettable()));
         keyBindings.add(new KeyBind(Items.SPLASH_POTION, new BindSetting("Any Buff", "Throw Any Buff"), new BooleanSettable()));

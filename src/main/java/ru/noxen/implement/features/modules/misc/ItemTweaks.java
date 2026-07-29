@@ -22,7 +22,7 @@ public class ItemTweaks extends Module {
     ValueSetting scrollerSetting = new ValueSetting("Item Scroller delay", "Select Item Scroller delay").setValue(100).range(0, 200);
 
     public ItemTweaks() {
-        super("ItemTweaks","Твики предметов", ModuleCategory.MISC);
+        super("ItemTweaks","ItemTweaks", ModuleCategory.MISC);
         setup(scrollerSetting);
     }
 

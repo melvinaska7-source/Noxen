@@ -32,7 +32,7 @@ public class HitBubbles extends Module implements QuickImports {
     private final CopyOnWriteArrayList<Bubble> bubbles = new CopyOnWriteArrayList<>();
 
     public HitBubbles() {
-        super("HitBubbles", "Пузыри при ударе", ModuleCategory.RENDER);
+        super("HitBubbles", "HitBubbles", ModuleCategory.RENDER);
         setup(countSetting, sizeSetting);
     }
 

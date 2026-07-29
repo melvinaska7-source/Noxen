@@ -16,7 +16,7 @@ public class NameProtect extends Module {
     BooleanSetting friendsSetting = new BooleanSetting("Friends","Hides friends' nicknames").setValue(true);
 
     public NameProtect() {
-        super("NameProtect","Защита ника", ModuleCategory.PLAYER);
+        super("NameProtect","NameProtect", ModuleCategory.PLAYER);
         setup(nameSetting, friendsSetting);
     }
 

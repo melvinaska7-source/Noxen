@@ -30,7 +30,7 @@ public class WorldTweaks extends Module {
             .setValue(100).range(20, 200).visible(() -> modeSetting.isSelected("Fog"));
 
     public WorldTweaks() {
-        super("WorldTweaks", "Твики мира", ModuleCategory.RENDER);
+        super("WorldTweaks", "Ambience", ModuleCategory.RENDER);
         setup(modeSetting, brightSetting, timeSetting, distanceSetting);
     }
 

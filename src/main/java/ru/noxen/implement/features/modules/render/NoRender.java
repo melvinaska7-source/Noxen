@@ -17,7 +17,7 @@ public class NoRender extends Module {
             .value("Fire", "Bad Effects", "Block Overlay");
 
     public NoRender() {
-        super("NoRender","Отключить рендер",ModuleCategory.RENDER);
+        super("NoRender","NoRender",ModuleCategory.RENDER);
         setup(modeSetting);
     }
 

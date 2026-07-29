@@ -43,7 +43,7 @@ public class Arrows extends Module {
             .setValue(16).range(8, 20);
 
     public Arrows() {
-        super("Arrows", "Указатели на игроков", ModuleCategory.RENDER);
+        super("Arrows", "Arrows", ModuleCategory.RENDER);
         setup(radiusSetting,sizeSetting);
     }
 

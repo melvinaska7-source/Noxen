@@ -21,7 +21,7 @@ public class ServerRPSpoofer extends Module {
     private final Counter counter = Counter.create();
 
     public ServerRPSpoofer() {
-        super("ServerRPSpoof", "Server RP Spoof", ModuleCategory.MISC);
+        super("ServerRPSpoof", "ServerRPSpoof", ModuleCategory.MISC);
     }
 
     @EventHandler

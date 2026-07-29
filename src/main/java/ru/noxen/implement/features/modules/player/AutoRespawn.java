@@ -20,7 +20,7 @@ public class AutoRespawn extends Module {
     SelectSetting modeSetting = new SelectSetting("Mode", "Choose what will be used").value("FunTime Back", "Default");
 
     public AutoRespawn() {
-        super("AutoRespawn", "Авто-возрождение", ModuleCategory.PLAYER);
+        super("AutoRespawn", "AutoRespawn", ModuleCategory.PLAYER);
         setup(modeSetting);
     }
 

@@ -54,7 +54,7 @@ public class ProjectilePrediction extends Module {
 
     private final List<Point> points = new ArrayList<>();
 
-    public ProjectilePrediction() {super("ProjectilePrediction", "Траектория снарядов", ModuleCategory.RENDER);}
+    public ProjectilePrediction() {super("ProjectilePrediction", "ProjectilePrediction", ModuleCategory.RENDER);}
 
     @EventHandler
     public void onDraw(DrawEvent e) {
