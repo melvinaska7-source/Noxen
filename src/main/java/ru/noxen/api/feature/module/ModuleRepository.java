@@ -48,7 +48,9 @@ public class ModuleRepository {
                 new ServerRPSpoofer(),
                 new TargetESP(),
                 new ChinaHat(),
-                new JumpCircle()
+                new JumpCircle(),
+                new HitParticles(),
+                new WorldParticles()
         );
     }
 
