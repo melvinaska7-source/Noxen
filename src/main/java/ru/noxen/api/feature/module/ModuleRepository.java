@@ -53,7 +53,6 @@ public class ModuleRepository {
                 new HitParticles(),
                 new FastExp(),
                 new Cubes(),
-                new ShaderHands(),
                 new WorldParticles()
         );
     }
