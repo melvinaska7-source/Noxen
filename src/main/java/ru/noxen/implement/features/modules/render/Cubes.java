@@ -29,7 +29,7 @@ public class Cubes extends Module implements QuickImports {
     private final CopyOnWriteArrayList<Cube> cubes = new CopyOnWriteArrayList<>();
 
     public Cubes() {
-        super("Cubes", "Кубы", ModuleCategory.RENDER);
+        super("Cubes", "Cubes", ModuleCategory.RENDER);
         setup(shapeSetting, countSetting, radiusSetting, sizeSetting, speedSetting);
     }
 
