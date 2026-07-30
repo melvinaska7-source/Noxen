@@ -51,6 +51,9 @@ public class ModuleRepository {
                 new JumpCircle(),
                 new HitBubbles(),
                 new HitParticles(),
+                new FastExp(),
+                new Cubes(),
+                new ShaderHands(),
                 new WorldParticles()
         );
     }

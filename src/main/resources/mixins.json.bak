@@ -49,8 +49,6 @@
     "MinecraftClientMixin",
     "ScreenMixin",
     "TextVisitFactoryMixin",
-    "IMinecraftClientAccessor",
     "WorldRendererMixin"
-    
   ]
 }

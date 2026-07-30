@@ -31,12 +31,13 @@ public class WorldParticles extends Module implements QuickImports {
 
     public final ValueSetting countSetting = new ValueSetting("Макс. частиц", "Сколько летает вокруг").range(5, 80).setValue(30);
     public final ValueSetting radiusSetting = new ValueSetting("Радиус", "Радиус появления").range(1, 8).setValue(3);
+    public final ValueSetting speedSetting = new ValueSetting("Скорость", "Скорость движения частиц").range(0.1f, 3.0f).setValue(1.0f);
 
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
     public WorldParticles() {
         super("WorldParticles", "WorldParticles", ModuleCategory.RENDER);
-        setup(typeSetting, countSetting, radiusSetting);
+        setup(typeSetting, countSetting, radiusSetting, speedSetting);
     }
 
     @EventHandler
@@ -77,7 +78,7 @@ public class WorldParticles extends Module implements QuickImports {
         RenderSystem.setShader(net.minecraft.client.gl.ShaderProgramKeys.POSITION_TEX_COLOR);
 
         for (Particle p : particles) {
-            p.tick(e.getPartialTicks());
+            p.tick(e.getPartialTicks(), (float) speedSetting.getValue());
 
             matrix.push();
             matrix.translate(p.pos.x, p.pos.y, p.pos.z);
@@ -137,8 +138,8 @@ public class WorldParticles extends Module implements QuickImports {
             this.colorOffset = r.nextFloat() * 360;
         }
 
-        void tick(float delta) {
-            pos = pos.add(velocity.multiply(delta));
+        void tick(float delta, float speedMultiplier) {
+            pos = pos.add(velocity.multiply(delta * speedMultiplier));
             velocity = new Vec3d(
                     velocity.x * 0.99,
                     velocity.y - 0.001 * delta,
