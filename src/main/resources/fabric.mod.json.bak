@@ -1,0 +1,31 @@
+
+{
+  "accessWidener": "matebal.accesswidener",
+  "schemaVersion": 1,
+  "id": "noxen",
+  "version": "1.2",
+  "name": "Noxen Visuals",
+  "description": "Minecraft Modification",
+  "authors": [
+    "Fabos",
+    "Pidor"
+  ],
+  "contact": {
+    "repo": "none"
+  },
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ru.noxen.core.Main"
+    ]
+  },
+  "mixins": [
+    "mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.8",
+    "fabric": "*",
+    "minecraft": "~1.21.4"
+  }
+}
