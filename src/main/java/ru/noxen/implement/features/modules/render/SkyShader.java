@@ -1,16 +1,18 @@
 package ru.noxen.implement.features.modules.render;
 
+import com.mojang.blaze3d.systems.ProjectionType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gl.Defines;
 import net.minecraft.client.gl.ShaderProgram;
 import net.minecraft.client.gl.ShaderProgramKey;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 import ru.noxen.api.event.EventHandler;
 import ru.noxen.api.feature.module.Module;
 import ru.noxen.api.feature.module.ModuleCategory;
@@ -18,7 +20,7 @@ import ru.noxen.api.feature.module.setting.implement.SelectSetting;
 import ru.noxen.api.feature.module.setting.implement.ValueSetting;
 import ru.noxen.common.QuickImports;
 import ru.noxen.common.util.color.ColorUtil;
-import ru.noxen.implement.events.render.DrawEvent;
+import ru.noxen.implement.events.render.WorldRenderEvent;
 
 public class SkyShader extends Module implements QuickImports {
 
@@ -30,7 +32,7 @@ public class SkyShader extends Module implements QuickImports {
     public final ValueSetting speedSetting = new ValueSetting("Скорость", "Скорость анимации").range(0.1f, 5.0f).setValue(1.0f);
     public final ValueSetting scaleSetting = new ValueSetting("Масштаб", "Масштаб узора").range(1.0f, 20.0f).setValue(5.0f);
     public final ValueSetting intensitySetting = new ValueSetting("Интенсивность", "Сила искажения").range(0.001f, 0.05f).setValue(0.01f);
-    public final ValueSetting alphaSetting = new ValueSetting("Прозрачность", "Насколько заметен эффект").range(0.05f, 1.0f).setValue(0.35f);
+    public final ValueSetting alphaSetting = new ValueSetting("Прозрачность", "Насколько заметен эффект").range(0.05f, 1.0f).setValue(1.0f);
 
     private final ShaderProgramKey SHADER_KEY = new ShaderProgramKey(
             Identifier.of("minecraft", "core/skyshader"), VertexFormats.POSITION, Defines.EMPTY);
@@ -48,35 +50,28 @@ public class SkyShader extends Module implements QuickImports {
     }
 
     @EventHandler
-    public void onDraw(DrawEvent e) {
+    public void onWorldRender(WorldRenderEvent e) {
         if (mc.player == null || mc.world == null) return;
         if (startMillis < 0) startMillis = System.currentTimeMillis();
 
-        MatrixStack matrix = e.getDrawContext().getMatrices();
-        float width = mc.getWindow().getScaledWidth();
-        float height = mc.getWindow().getScaledHeight();
-
         float time = (System.currentTimeMillis() - startMillis) / 1000f;
-        float yaw = (float) Math.toRadians(mc.gameRenderer.getCamera().getYaw());
-        float pitch = (float) Math.toRadians(mc.gameRenderer.getCamera().getPitch());
-        float fov = (float) mc.options.getFov().getValue();
+        float fw = mc.getWindow().getFramebufferWidth();
+        float fh = mc.getWindow().getFramebufferHeight();
 
         int themeColor = ColorUtil.getClientColor();
         float cr = ColorUtil.redf(themeColor);
         float cg = ColorUtil.greenf(themeColor);
         float cb = ColorUtil.bluef(themeColor);
 
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.disableCull();
-
-        BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
-        Matrix4f posMatrix = matrix.peek().getPositionMatrix();
-        drawEngine.quad(posMatrix, buffer, 0, 0, width, height);
+        float yaw = (float) Math.toRadians(-mc.gameRenderer.getCamera().getYaw());
+        float pitch = (float) Math.toRadians(mc.gameRenderer.getCamera().getPitch());
+        float fov = (float) mc.options.getFov().getValue().intValue();
 
         ShaderProgram shader = RenderSystem.setShader(SHADER_KEY);
+        if (shader == null) return;
+
         shader.getUniformOrDefault("uTime").set(time);
-        shader.getUniformOrDefault("uResolution").set((float) mc.getWindow().getFramebufferWidth(), (float) mc.getWindow().getFramebufferHeight());
+        shader.getUniformOrDefault("uResolution").set(fw, fh);
         shader.getUniformOrDefault("uColor").set(cr, cg, cb);
         shader.getUniformOrDefault("uAlpha").set((float) alphaSetting.getValue());
         shader.getUniformOrDefault("uSpeed").set((float) speedSetting.getValue());
@@ -86,9 +81,32 @@ public class SkyShader extends Module implements QuickImports {
         shader.getUniformOrDefault("uFov").set(fov);
         shader.getUniformOrDefault("uMode").set(modeSetting.isSelected("Каустика") ? 1.0f : 0.0f);
 
-        BufferRenderer.drawWithGlobalProgram(buffer.end());
+        // Временно подменяем проекцию на ортографическую, рисуем квад в clip-space
+        // на дальней плоскости (z=1). Тест глубины GL_EQUAL + отключённая запись
+        // глубины гарантирует, что эффект появится только там, где ничего не
+        // отрисовано перед этим (то есть на месте неба), не перекрывая террейн.
+        Matrix4f savedProj = new Matrix4f(RenderSystem.getProjectionMatrix());
+        RenderSystem.setProjectionMatrix(new Matrix4f(), ProjectionType.ORTHOGRAPHIC);
 
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthFunc(GL11.GL_EQUAL);
+        RenderSystem.depthMask(false);
+        RenderSystem.disableCull();
+
+        Matrix4f identity = new Matrix4f();
+        BufferBuilder buf = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+        buf.vertex(identity, -1f, -1f, 1f);
+        buf.vertex(identity, 1f, -1f, 1f);
+        buf.vertex(identity, 1f, 1f, 1f);
+        buf.vertex(identity, -1f, 1f, 1f);
+        BufferRenderer.drawWithGlobalProgram(buf.end());
+
+        RenderSystem.depthMask(true);
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        RenderSystem.setProjectionMatrix(savedProj, ProjectionType.PERSPECTIVE);
     }
 }
