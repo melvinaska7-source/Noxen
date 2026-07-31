@@ -23,24 +23,6 @@ mat3 rotateX(float a) {
     return mat3(1.0, 0.0, 0.0, 0.0, c, -s, 0.0, s, c);
 }
 
-float warp(vec3 p, float t, int iterations) {
-    vec3 q = p;
-    float sum = 0.0;
-    float weight = 1.0;
-    for (int n = 0; n < iterations; n++) {
-        float phase = t * (0.6 + 0.4 * float(n));
-        q = vec3(
-            q.x + sin(q.z * 1.3 + phase) * 0.6,
-            q.y + cos(q.x * 1.1 - phase) * 0.6,
-            q.z + sin(q.y * 1.4 + phase * 0.8) * 0.6
-        );
-        sum += weight / (1.0 + abs(dot(q, p)) * uIntensity * 40.0);
-        weight *= 0.55;
-        p *= 1.35;
-    }
-    return sum;
-}
-
 void main() {
     vec2 uv = (gl_FragCoord.xy / uResolution.xy) * 2.0 - 1.0;
     float aspect = uResolution.x / max(uResolution.y, 1.0);
@@ -50,17 +32,35 @@ void main() {
     vec3 rayView = normalize(vec3(uv.x * tanHalf * aspect, uv.y * tanHalf, 1.0));
     vec3 ray = rotateY(uCameraDir.x) * rotateX(uCameraDir.y) * rayView;
 
-    float t = uTime * uSpeed;
+    float t = uTime * uSpeed * (uMode > 0.5 ? 14.0 : 10.0);
     vec3 p = ray * uScale;
+    vec3 q = p;
 
-    int iterations = uMode > 0.5 ? 6 : 4;
-    float field = warp(p, t, iterations);
+    float field = 0.0;
+    int iterations = uMode > 0.5 ? 6 : 5;
+
+    for (int n = 0; n < iterations; n++) {
+        float nn = float(n + 1);
+        float phase = t * (11.0 - (3.0 / nn));
+        q = p + vec3(
+            cos(phase - q.x) + sin(phase + q.y),
+            sin(phase - q.y) + cos(phase + q.z),
+            cos(phase - q.z) + sin(phase + q.x)
+        );
+        vec3 denom = vec3(
+            p.x / (sin(q.x + phase) / uIntensity),
+            p.y / (cos(q.y + phase) / uIntensity),
+            p.z / (sin(q.z + phase) / uIntensity)
+        );
+        field += 1.0 / max(length(denom), 0.0001);
+    }
+
     field /= float(iterations);
+    field = 1.5 - sqrt(clamp(field, 0.0, 2.25));
+    float brightness = clamp(field * field * field * field, 0.0, 1.0);
 
-    float glow = pow(clamp(field, 0.0, 1.0), uMode > 0.5 ? 3.0 : 4.5);
+    vec3 tint = uMode > 0.5 ? mix(uColor, vec3(1.0), 0.2) : uColor;
+    vec3 color = tint * brightness + tint * 0.15;
 
-    vec3 baseTint = uMode > 0.5 ? mix(uColor, vec3(1.0), 0.25) : uColor;
-    vec3 color = baseTint * glow + baseTint * 0.12;
-
-    fragColor = vec4(color, glow * uAlpha + 0.02 * uAlpha);
+    fragColor = vec4(color, brightness * uAlpha + 0.05 * uAlpha);
 }
