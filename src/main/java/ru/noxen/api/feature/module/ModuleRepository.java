@@ -54,7 +54,8 @@ public class ModuleRepository {
                 new FastExp(),
                 new Cubes(),
                 new WorldParticles(),
-                new SkyShader()
+                new SkyShader(),
+                new InvSort()
         );
     }
 
