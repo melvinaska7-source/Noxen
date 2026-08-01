@@ -5,10 +5,10 @@
   "id": "noxen",
   "version": "1.2",
   "name": "Noxen Visuals",
+  "icon": "assets/minecraft/textures/icon.png"
   "description": "Minecraft Modification",
   "authors": [
-    "Fabos",
-    "Pidor"
+    "MelviAvas",
   ],
   "contact": {
     "repo": "none"
