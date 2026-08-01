@@ -26,12 +26,12 @@ public class WorldParticles extends Module implements QuickImports {
         return ru.noxen.common.util.other.Instance.get(WorldParticles.class);
     }
 
-    public final SelectSetting typeSetting = new SelectSetting("Вид", "Выбери текстуру")
-            .value("Доллары", "Снежинки", "Орбизы", "Звёзды", "Пузыри");
+    public final SelectSetting typeSetting = new SelectSetting("Type", "Select texture")
+            .value("Dollars", "Snowflakes", "Orbs", "Stars", "Bubbles");
 
-    public final ValueSetting countSetting = new ValueSetting("Макс. частиц", "Сколько летает вокруг").range(5, 80).setValue(30);
-    public final ValueSetting radiusSetting = new ValueSetting("Радиус", "Радиус появления").range(1, 8).setValue(3);
-    public final ValueSetting speedSetting = new ValueSetting("Скорость", "Скорость движения частиц").range(0.1f, 3.0f).setValue(1.0f);
+    public final ValueSetting countSetting = new ValueSetting("Max Particles", "How many float around").range(5, 80).setValue(30);
+    public final ValueSetting radiusSetting = new ValueSetting("Radius", "Spawn radius").range(1, 8).setValue(3);
+    public final ValueSetting speedSetting = new ValueSetting("Speed", "Particle movement speed").range(0.1f, 3.0f).setValue(1.0f);
 
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
@@ -109,10 +109,10 @@ public class WorldParticles extends Module implements QuickImports {
     }
 
     private Identifier getTexture() {
-        if (typeSetting.isSelected("Снежинки")) return Identifier.of("minecraft", "textures/snow.png");
-        if (typeSetting.isSelected("Орбизы"))   return Identifier.of("minecraft", "textures/orbiz.png");
-        if (typeSetting.isSelected("Звёзды"))   return Identifier.of("minecraft", "textures/star.png");
-        if (typeSetting.isSelected("Пузыри"))   return Identifier.of("minecraft", "textures/bubble.png");
+        if (typeSetting.isSelected("Snowflakes")) return Identifier.of("minecraft", "textures/snow.png");
+        if (typeSetting.isSelected("Orbs"))   return Identifier.of("minecraft", "textures/orbiz.png");
+        if (typeSetting.isSelected("Stars"))   return Identifier.of("minecraft", "textures/star.png");
+        if (typeSetting.isSelected("Bubbles"))   return Identifier.of("minecraft", "textures/bubble.png");
         return Identifier.of("minecraft", "textures/dollar.png");
     }
 

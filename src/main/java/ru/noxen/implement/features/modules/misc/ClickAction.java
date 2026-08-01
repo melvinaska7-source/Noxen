@@ -105,11 +105,11 @@ public class ClickAction extends Module {
         switch (bind.setting.getName()) {
             case "Any Buff" -> {
                 Slot slot = PlayerInventoryUtil.getPotionFromCategory(StatusEffectCategory.BENEFICIAL);
-                PlayerInventoryUtil.swapAndUse(slot, "Бафф", true);
+                PlayerInventoryUtil.swapAndUse(slot, "Buff", true);
             }
             case "Any Debuff" -> {
                 Slot slot = PlayerInventoryUtil.getPotionFromCategory(StatusEffectCategory.HARMFUL);
-                PlayerInventoryUtil.swapAndUse(slot, "Дебафф", true);
+                PlayerInventoryUtil.swapAndUse(slot, "Debuff", true);
             }
             default -> PlayerInventoryUtil.swapAndUse(bind.item);
         }

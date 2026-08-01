@@ -26,10 +26,10 @@ public class HitParticles extends Module implements QuickImports {
         return ru.noxen.common.util.other.Instance.get(HitParticles.class);
     }
 
-    public final MultiSelectSetting typeSetting = new MultiSelectSetting("Вид", "Выбери текстуру")
-            .value("Доллары", "Снежинки", "Орбизы", "Звёзды", "Пузыри");
+    public final MultiSelectSetting typeSetting = new MultiSelectSetting("Type", "Select texture")
+            .value("Dollars", "Snowflakes", "Orbs", "Stars", "Bubbles");
 
-    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Частиц за удар").range(1, 40).setValue(15);
+    public final ValueSetting countSetting = new ValueSetting("Count", "Particles per hit").range(1, 40).setValue(15);
 
     private final CopyOnWriteArrayList<Particle> particles = new CopyOnWriteArrayList<>();
 
@@ -94,10 +94,10 @@ public class HitParticles extends Module implements QuickImports {
     }
 
     private Identifier getTexture() {
-        if (typeSetting.isSelected("Снежинки")) return Identifier.of("minecraft", "textures/snow.png");
-        if (typeSetting.isSelected("Орбизы"))   return Identifier.of("minecraft", "textures/orbiz.png");
-        if (typeSetting.isSelected("Звёзды"))   return Identifier.of("minecraft", "textures/star.png");
-        if (typeSetting.isSelected("Пузыри"))   return Identifier.of("minecraft", "textures/bubble.png");
+        if (typeSetting.isSelected("Snowflakes")) return Identifier.of("minecraft", "textures/snow.png");
+        if (typeSetting.isSelected("Orbs"))   return Identifier.of("minecraft", "textures/orbiz.png");
+        if (typeSetting.isSelected("Stars"))   return Identifier.of("minecraft", "textures/star.png");
+        if (typeSetting.isSelected("Bubbles"))   return Identifier.of("minecraft", "textures/bubble.png");
         return Identifier.of("minecraft", "textures/dollar.png");
     }
 

@@ -68,7 +68,7 @@ public class ProjectilePrediction extends Module {
 
             FontRenderer font = Fonts.getSize(13);
             double time = ticks * 50 / 1000.0;
-            String text = String.format("%.1f", time) + " сек";
+            String text = String.format("%.1f", time) + " s";
             float textWidth = font.getStringWidth(text);
             float posX = (float) (vec3d.getX() + textWidth / 2 - 6);
             float posY = (float) (vec3d.getY() + 4);

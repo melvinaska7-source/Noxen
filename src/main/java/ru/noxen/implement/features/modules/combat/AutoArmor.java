@@ -62,11 +62,11 @@ public class AutoArmor extends Module {
                 if (slot != null) {
                     list.add(() -> PlayerInventoryUtil.moveItem(slot, armorSlot));
                     if (hud.state && hud.notificationSettings.isSelected("Auto Armor"))
-                        Notifications.getInstance().addList(Text.literal("Заменил - " + Formatting.GREEN + equipName(equipment) + Formatting.RESET + " на ").append(equipStack.getName()), 3000);
+                        Notifications.getInstance().addList(Text.literal("Replaced - " + Formatting.GREEN + equipName(equipment) + Formatting.RESET + " with ").append(equipStack.getName()), 3000);
                 } else if (PlayerInventoryUtil.getSlot(Items.AIR, s -> s.id >= 9) != null) {
                     list.add(() -> PlayerInventoryUtil.clickSlot(armorSlot, 0, SlotActionType.QUICK_MOVE,false));
                     if (hud.state && hud.notificationSettings.isSelected("Auto Armor"))
-                        Notifications.getInstance().addList(Text.literal("Засейвил - ").append(equipStack.getName()), 3000);
+                        Notifications.getInstance().addList(Text.literal("Saved - ").append(equipStack.getName()), 3000);
                 }
             }
         }
@@ -107,11 +107,11 @@ public class AutoArmor extends Module {
 
     private String equipName(EquipmentSlot equipmentSlot) {
         return switch (equipmentSlot) {
-            case FEET -> "Ботинки";
-            case LEGS -> "Поножи";
-            case CHEST -> "Нагрудник";
-            case HEAD -> "Шлем";
-            default -> "ДЕЗЗ СВИНЬЯ СУКААА!";
+            case FEET -> "Boots";
+            case LEGS -> "Leggings";
+            case CHEST -> "Chestplate";
+            case HEAD -> "Helmet";
+            default -> "UNKNOWN!";
         };
     }
 }

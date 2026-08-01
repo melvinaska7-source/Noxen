@@ -20,11 +20,11 @@ public class Cubes extends Module implements QuickImports {
         return ru.noxen.common.util.other.Instance.get(Cubes.class);
     }
 
-    public final SelectSetting shapeSetting = new SelectSetting("Форма", "Форма частиц").value("Куб", "Треугольник");
-    public final ValueSetting countSetting = new ValueSetting("Кол-во", "Сколько летает вокруг").range(3, 40).setValue(15);
-    public final ValueSetting radiusSetting = new ValueSetting("Радиус", "Радиус появления").range(1, 8).setValue(4);
-    public final ValueSetting sizeSetting = new ValueSetting("Размер", "Размер фигур").range(0.05f, 0.5f).setValue(0.18f);
-    public final ValueSetting speedSetting = new ValueSetting("Скорость", "Скорость движения и вращения").range(0.05f, 2.0f).setValue(0.2f);
+    public final SelectSetting shapeSetting = new SelectSetting("Shape", "Particle shape").value("Cube", "Triangle");
+    public final ValueSetting countSetting = new ValueSetting("Count", "How many float around").range(3, 40).setValue(15);
+    public final ValueSetting radiusSetting = new ValueSetting("Radius", "Spawn radius").range(1, 8).setValue(4);
+    public final ValueSetting sizeSetting = new ValueSetting("Size", "Shape size").range(0.05f, 0.5f).setValue(0.18f);
+    public final ValueSetting speedSetting = new ValueSetting("Speed", "Movement and rotation speed").range(0.05f, 2.0f).setValue(0.2f);
 
     private final CopyOnWriteArrayList<Cube> cubes = new CopyOnWriteArrayList<>();
 
@@ -65,7 +65,7 @@ public class Cubes extends Module implements QuickImports {
     @EventHandler
     public void onRender(ru.noxen.implement.events.render.WorldRenderEvent e) {
         float size = (float) sizeSetting.getValue();
-        boolean triangle = shapeSetting.isSelected("Треугольник");
+        boolean triangle = shapeSetting.isSelected("Triangle");
 
         for (Cube c : cubes) {
             int color = ColorUtil.multAlpha(ColorUtil.fade((int) c.colorOffset), c.getAlpha());

@@ -15,7 +15,7 @@ public class FastExp extends Module implements QuickImports {
     }
 
     public FastExp() {
-        super("FastExp", "Быстрый опыт", ModuleCategory.PLAYER);
+        super("FastExp", "FastExp", ModuleCategory.PLAYER);
     }
 
     @EventHandler

@@ -39,9 +39,9 @@ public class AutoLeave extends Module {
 
         if (triggerSetting.isSelected("Players"))
             mc.world.getPlayers().stream().filter(p -> mc.player.distanceTo(p) < distanceSetting.getValue() && mc.player != p && !FriendUtils.isFriend(p))
-                    .findFirst().ifPresent(p -> leave(p.getName().copy().append(" - Появился рядом " + mc.player.distanceTo(p) + "м")));
+                    .findFirst().ifPresent(p -> leave(p.getName().copy().append(" - Appeared nearby " + mc.player.distanceTo(p) + "m")));
         if (triggerSetting.isSelected("Staff") && !StaffList.getInstance().list.isEmpty())
-            leave(Text.of("Стафф на сервере"));
+            leave(Text.of("Staff on server"));
     }
 
     
