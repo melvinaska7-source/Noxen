@@ -28,7 +28,7 @@ public class SkyShader extends Module implements QuickImports {
         return ru.noxen.common.util.other.Instance.get(SkyShader.class);
     }
 
-    public final SelectSetting modeSetting = new SelectSetting("Режим", "Тип эффекта").value("Вода", "Каустика");
+    public final SelectSetting modeSetting = new SelectSetting("Режим", "Тип эффекта").value("Волны", "Огонь");
     public final ValueSetting speedSetting = new ValueSetting("Скорость", "Скорость анимации").range(0.1f, 5.0f).setValue(1.0f);
     public final ValueSetting scaleSetting = new ValueSetting("Масштаб", "Масштаб узора").range(1.0f, 20.0f).setValue(5.0f);
     public final ValueSetting intensitySetting = new ValueSetting("Интенсивность", "Сила искажения").range(0.001f, 0.05f).setValue(0.01f);
@@ -79,7 +79,7 @@ public class SkyShader extends Module implements QuickImports {
         shader.getUniformOrDefault("uIntensity").set((float) intensitySetting.getValue());
         shader.getUniformOrDefault("uCameraDir").set(yaw, pitch);
         shader.getUniformOrDefault("uFov").set(fov);
-        shader.getUniformOrDefault("uMode").set(modeSetting.isSelected("Каустика") ? 1.0f : 0.0f);
+        shader.getUniformOrDefault("uMode").set(modeSetting.isSelected("Огонь") ? 1.0f : 0.0f);
 
         // Временно подменяем проекцию на ортографическую, рисуем квад в clip-space
         // на дальней плоскости (z=1). Тест глубины GL_EQUAL + отключённая запись
