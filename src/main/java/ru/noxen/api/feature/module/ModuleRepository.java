@@ -57,8 +57,7 @@ public class ModuleRepository {
                 new SkyShader(),
                 new InvSort(),
                 new ShiftTap(),
-                new KillEffect(),
-                new DynamicIsland()
+                new KillEffect()
         );
     }
 
