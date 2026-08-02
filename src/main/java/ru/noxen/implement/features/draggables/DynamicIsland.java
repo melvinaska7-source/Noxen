@@ -40,11 +40,11 @@ public class DynamicIsland extends AbstractDraggable implements QuickImports {
         return Instance.getDraggable(DynamicIsland.class);
     }
 
-    private final DecelerateAnimation internetAnimation = new DecelerateAnimation().setMs(300).setValue(1);
-    private final DecelerateAnimation mediaAnimation = new DecelerateAnimation().setMs(300).setValue(1);
-    private final DecelerateAnimation pvpAnimation = new DecelerateAnimation().setMs(300).setValue(1);
-    private final DecelerateAnimation barAnimation = new DecelerateAnimation().setMs(300).setValue(1);
-    private final DecelerateAnimation moduleAnimation = new DecelerateAnimation().setMs(300).setValue(1);
+    private final DecelerateAnimation internetAnimation = new DecelerateAnimation();
+    private final DecelerateAnimation mediaAnimation = new DecelerateAnimation();
+    private final DecelerateAnimation pvpAnimation = new DecelerateAnimation();
+    private final DecelerateAnimation barAnimation = new DecelerateAnimation();
+    private final DecelerateAnimation moduleAnimation = new DecelerateAnimation();
 
     private final float[] targetBarHeights = new float[]{10f, 8f, 6f};
     private final float[] currentBarHeights = new float[]{10f, 8f, 6f};
@@ -70,6 +70,16 @@ public class DynamicIsland extends AbstractDraggable implements QuickImports {
 
     public DynamicIsland() {
         super("Dynamic Island", 0, 4, 100, 18, false);
+        internetAnimation.setMs(300);
+        internetAnimation.setValue(1);
+        mediaAnimation.setMs(300);
+        mediaAnimation.setValue(1);
+        pvpAnimation.setMs(300);
+        pvpAnimation.setValue(1);
+        barAnimation.setMs(300);
+        barAnimation.setValue(1);
+        moduleAnimation.setMs(300);
+        moduleAnimation.setValue(1);
     }
 
     @Override
@@ -345,7 +355,7 @@ public class DynamicIsland extends AbstractDraggable implements QuickImports {
         FontRenderer timeFont = Fonts.getSize(13, Fonts.Type.DEFAULT);
         timeFont.drawString(matrix, time, x - 1 - (padding * 3f) - timeFont.getStringWidth(time), y - 0.5f - (padding / 2f) + (timeFont.getStringHeight(time) / 2f), ColorUtil.WHITE);
 
-        float baseBarY = y + padding + (Fonts.getSize(7, Fonts.Type.ICONS).getStringHeight("P") / 2f) - 4 + 1;
+        float baseBarY = y + padding + (Fonts.getSize(7, Fonts.Type.DEFAULT).getStringHeight("P") / 2f) - 4 + 1;
         float[] barYs = new float[3];
         for (int i = 0; i < 3; i++) barYs[i] = baseBarY + (10 - currentBarHeights[i]) / 2f;
 
