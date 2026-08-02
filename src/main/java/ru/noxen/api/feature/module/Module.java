@@ -65,11 +65,13 @@ public class Module extends SettingRepository implements QuickImports {
                 if (Hud.getInstance().notificationSettings.isSelected("Module Switch")) {
                     Notifications.getInstance().addList("Модуль " + Formatting.GREEN + visibleName + Formatting.RESET + " - включен!", 2000, SoundManager.ENABLE_MODULE);
                 }
+                ru.noxen.implement.features.draggables.DynamicIsland.getInstance().showModuleNotification(visibleName, true);
                 activate();
             } else {
                 if (Hud.getInstance().notificationSettings.isSelected("Module Switch")) {
                     Notifications.getInstance().addList("Модуль " + Formatting.RED + visibleName + Formatting.RESET + " - выключен!", 2000, SoundManager.DISABLE_MODULE);
                 }
+                ru.noxen.implement.features.draggables.DynamicIsland.getInstance().showModuleNotification(visibleName, false);
                 deactivate();
             }
         }
