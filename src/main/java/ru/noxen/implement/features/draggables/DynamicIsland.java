@@ -50,6 +50,9 @@ public class DynamicIsland extends AbstractDraggable implements QuickImports {
     private final float[] currentBarHeights = new float[]{10f, 8f, 6f};
     private long lastUpdateTime = 0;
 
+    private float currentWidth = 60f;
+    private float currentHeight = 15f;
+
     private String currentModuleNotification = "";
     private String currentModuleNotificationClean = "";
     private long moduleNotificationTime = 0;
@@ -177,11 +180,14 @@ public class DynamicIsland extends AbstractDraggable implements QuickImports {
         boolean isPvp = ServerUtil.isPvp();
         boolean mediaNull = (trackName == null || trackName.isEmpty());
         boolean hasActiveMusic = !mediaNull && !isPvp;
+        boolean showModuleNotification = !currentModuleNotification.isEmpty()
+                && System.currentTimeMillis() - moduleNotificationTime < MODULE_NOTIFICATION_DURATION;
 
         internetAnimation.setDirection(ping < 1000 ? Direction.FORWARDS : Direction.BACKWARDS);
         mediaAnimation.setDirection(isPvp || mediaNull ? Direction.BACKWARDS : Direction.FORWARDS);
         pvpAnimation.setDirection(isPvp ? Direction.FORWARDS : Direction.BACKWARDS);
         barAnimation.setDirection(hasActiveMusic ? Direction.FORWARDS : Direction.BACKWARDS);
+        moduleAnimation.setDirection(showModuleNotification ? Direction.FORWARDS : Direction.BACKWARDS);
 
         if (hasActiveMusic && System.currentTimeMillis() - lastUpdateTime > 100) {
             updateBarHeights();
@@ -192,9 +198,27 @@ public class DynamicIsland extends AbstractDraggable implements QuickImports {
             currentBarHeights[i] = lerp(currentBarHeights[i], targetBarHeights[i], 0.3f);
         }
 
-        boolean showModuleNotification = !currentModuleNotification.isEmpty()
-                && System.currentTimeMillis() - moduleNotificationTime < MODULE_NOTIFICATION_DURATION;
-        moduleAnimation.setDirection(showModuleNotification ? Direction.FORWARDS : Direction.BACKWARDS);
+        // Figure out how wide the pill needs to be for whatever is currently shown,
+        // then smoothly glide towards it instead of snapping instantly.
+        float padding = 2f;
+        FontRenderer font = Fonts.getSize(12, Fonts.Type.BOLD);
+        float targetWidth;
+        if (showModuleNotification) {
+            targetWidth = 15 + font.getStringWidth(currentModuleNotificationClean) + padding * 2;
+        } else if (isPvp) {
+            targetWidth = 15 + font.getStringWidth("PVP") + padding * 3;
+        } else if (!mediaNull) {
+            String track = trackName != null ? trackName : "";
+            String artist = artistsText != null ? artistsText : "";
+            String fullTrack = track + (artist.isEmpty() ? "" : " - " + artist);
+            targetWidth = 15 + font.getStringWidth(fullTrack) + padding * 2;
+        } else {
+            targetWidth = 15 + font.getStringWidth("Noxen") + padding * 2;
+        }
+        float targetHeight = 15f;
+
+        currentWidth = lerp(currentWidth, targetWidth, 0.2f);
+        currentHeight = lerp(currentHeight, targetHeight, 0.2f);
     }
 
     public void showModuleNotification(String moduleName, boolean enabled) {
@@ -288,20 +312,10 @@ public class DynamicIsland extends AbstractDraggable implements QuickImports {
         float round = 6f;
 
         FontRenderer font = Fonts.getSize(12, Fonts.Type.BOLD);
-        float baseWidth;
-        if (showModuleNotification) {
-            baseWidth = 15 + font.getStringWidth(currentModuleNotificationClean) + padding * 2;
-        } else if (isPvp) {
-            baseWidth = 15 + font.getStringWidth(pvp) + padding * 3;
-        } else if (!mediaNull) {
-            baseWidth = 15 + font.getStringWidth(fullTrack) + padding * 2;
-        } else {
-            baseWidth = 15 + font.getStringWidth(name) + padding * 2;
-        }
 
         float baseHeight = 15f;
-        float width = baseWidth;
-        float height = baseHeight;
+        float width = currentWidth;
+        float height = currentHeight;
         float x = mc.getWindow().getScaledWidth() / 2f - width / 2f;
 
         float bossBarOffset = 0f;

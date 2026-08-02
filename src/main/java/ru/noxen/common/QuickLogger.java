@@ -10,8 +10,18 @@ import java.util.stream.Stream;
 
 public interface QuickLogger {
     static Text getPrefix() {
-        MutableText text = Text.literal("[ZE" + Formatting.BLUE + "NI" + Formatting.RED + "TH" + Formatting.RESET + "]");
-        text.setStyle(text.getStyle().withColor(Formatting.WHITE));
+        int[] colors = {0x54DAF4, 0x54BBE5, 0x549CD5, 0x547DC6, 0x545EB6};
+        String letters = "NOXEN";
+
+        MutableText text = Text.literal("[").setStyle(Text.empty().getStyle().withColor(Formatting.WHITE));
+        for (int i = 0; i < letters.length(); i++) {
+            MutableText letter = Text.literal(String.valueOf(letters.charAt(i)));
+            letter.setStyle(letter.getStyle()
+                    .withColor(net.minecraft.text.TextColor.fromRgb(colors[i]))
+                    .withBold(true));
+            text.append(letter);
+        }
+        text.append(Text.literal("]").setStyle(Text.empty().getStyle().withColor(Formatting.WHITE)));
         text.append(" -> ");
         return text;
     }
