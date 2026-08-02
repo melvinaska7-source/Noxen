@@ -1,14 +1,13 @@
-
 {
   "accessWidener": "matebal.accesswidener",
   "schemaVersion": 1,
   "id": "noxen",
   "version": "1.2",
   "name": "Noxen Visuals",
-  "icon": "assets/minecraft/textures/icon.png"
+  "icon": "assets/minecraft/textures/icon.png",
   "description": "Minecraft Modification",
   "authors": [
-    "MelviAvas",
+    "MelviAvas"
   ],
   "contact": {
     "repo": "none"

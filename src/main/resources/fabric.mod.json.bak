@@ -5,7 +5,7 @@
   "id": "noxen",
   "version": "1.2",
   "name": "Noxen Visuals",
-  "icon": "assets
+  "icon": "assets/minecraft/textures/icon.png"
   "description": "Minecraft Modification",
   "authors": [
     "MelviAvas",
