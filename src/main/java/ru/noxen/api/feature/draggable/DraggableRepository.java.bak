@@ -30,8 +30,7 @@ public class DraggableRepository {
                 new ScoreBoard(),
                 new MediaPlayer(),
                 new HotBar(),
-                new PlayerInfo(),
-                new DynamicIsland()
+                new PlayerInfo()
         );
     }
 

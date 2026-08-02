@@ -55,7 +55,10 @@ public class ModuleRepository {
                 new Cubes(),
                 new WorldParticles(),
                 new SkyShader(),
-                new InvSort()
+                new InvSort(),
+                new ShiftTap(),
+                new KillEffect(),
+                new DynamicIsland()
         );
     }
 
