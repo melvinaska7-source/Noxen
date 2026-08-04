@@ -19,9 +19,12 @@ import ru.noxen.common.util.other.StopWatch;
 import ru.noxen.common.util.other.StringUtil;
 import ru.noxen.common.util.entity.PlayerIntersectionUtil;
 import ru.noxen.common.util.render.Render2DUtil;
+import ru.noxen.common.util.render.GlassPipeline;
 import ru.noxen.common.util.render.ScissorManager;
 import ru.noxen.core.Main;
 import ru.noxen.implement.features.modules.render.Hud;
+
+import java.awt.Color;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -80,8 +83,12 @@ public class MediaPlayer extends AbstractDraggable {
         String timeDuration = StringUtil.getDuration(duration);
         widthDuration = MathHelper.clamp(MathUtil.interpolateSmooth(1, widthDuration, Math.round((float) position / duration * maxDurationWidth)),1, maxDurationWidth);
 
-        blur.render(ShapeProperties.create(matrix,getX(),getY(),getWidth(),getHeight()).thickness(2.25F).softness(1)
-                .round(4).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        if (Hud.getInstance().liquidGlassSetting.isValue()) {
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY(), getWidth(), getHeight(), 4f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+        } else {
+            blur.render(ShapeProperties.create(matrix,getX(),getY(),getWidth(),getHeight()).thickness(2.25F).softness(1)
+                    .round(4).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        }
 
         scissor.push(matrix.peek().getPositionMatrix(),getX() + sizeArtwork + 8, getY(),getWidth() - sizeArtwork - 10,getHeight());
         big.drawStringWithScroll(matrix, mediaInfo.getTitle(), getX() + sizeArtwork + 8,getY() + 7, 56, ColorUtil.getText());

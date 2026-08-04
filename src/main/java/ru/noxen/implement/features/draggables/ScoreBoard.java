@@ -10,7 +10,10 @@ import ru.noxen.api.system.font.FontRenderer;
 import ru.noxen.api.system.font.Fonts;
 import ru.noxen.api.system.shape.ShapeProperties;
 import ru.noxen.common.util.color.ColorUtil;
+import ru.noxen.common.util.render.GlassPipeline;
+import ru.noxen.implement.features.modules.render.Hud;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -48,10 +51,15 @@ public class ScoreBoard extends AbstractDraggable {
         int offsetText = 14;
         int width = (int) Math.max(font.getStringWidth(text) + padding * 2 + 1,100);
 
-        blur.render(ShapeProperties.create(matrix,getX(),getY(),getWidth(),offsetText)
-                .round(4,0,4,0).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRectDarker(0.9F)).build());
-        blur.render(ShapeProperties.create(matrix,getX(),getY() + offsetText - 0.5F,getWidth(),getHeight() - offsetText)
-                .quality(40).round(0,4,0,4).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        if (Hud.getInstance().liquidGlassSetting.isValue()) {
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY(), getWidth(), offsetText, 4f, 5f, 3f, 0f, new Color(255, 255, 255, 45), 0.9f, 0f);
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY() + offsetText - 0.5F, getWidth(), getHeight() - offsetText, 4f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+        } else {
+            blur.render(ShapeProperties.create(matrix,getX(),getY(),getWidth(),offsetText)
+                    .round(4,0,4,0).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRectDarker(0.9F)).build());
+            blur.render(ShapeProperties.create(matrix,getX(),getY() + offsetText - 0.5F,getWidth(),getHeight() - offsetText)
+                    .quality(40).round(0,4,0,4).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        }
 
         font.drawText(matrix, mainText, (int) (getX() + (getWidth() - font.getStringWidth(mainText)) / 2),getY() + padding + 1.5F);
         font.drawText(matrix, text, getX() + padding,getY() + offsetText + padding);

@@ -12,8 +12,11 @@ import ru.noxen.api.system.font.Fonts;
 import ru.noxen.api.system.shape.ShapeProperties;
 import ru.noxen.common.util.math.MathUtil;
 import ru.noxen.common.util.render.Render2DUtil;
+import ru.noxen.common.util.render.GlassPipeline;
 import ru.noxen.common.util.color.ColorUtil;
+import ru.noxen.implement.features.modules.render.Hud;
 
+import java.awt.Color;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -34,8 +37,12 @@ public class HotBar extends AbstractDraggable {
         setX((mc.getWindow().getScaledWidth() - getWidth()) / 2);
         setY(mc.getWindow().getScaledHeight() - 27);
 
-        blur.render(ShapeProperties.create(matrix, getX() - 0.5F, getY() - 0.5F, getWidth() + 1,23F)
-                .round(3).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        if (Hud.getInstance().liquidGlassSetting.isValue()) {
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX() - 0.5F, getY() - 0.5F, getWidth() + 1, 23F, 3f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+        } else {
+            blur.render(ShapeProperties.create(matrix, getX() - 0.5F, getY() - 0.5F, getWidth() + 1,23F)
+                    .round(3).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        }
 
         rectangle.render(ShapeProperties.create(matrix, getX() + selectItemX + 1,getY() + 1,20,20)
                 .round(2.25F).thickness(3).outlineColor(ColorUtil.getClientColor()).color(ColorUtil.getRect(0)).build());
@@ -64,8 +71,12 @@ public class HotBar extends AbstractDraggable {
             float width = font.getStringWidth(text);
             int x = (int) (scaledWidth - width / 2);
             MathUtil.setAlpha(alpha, () -> {
-                blur.render(ShapeProperties.create(matrix,x - paddingX,heightStart - paddingY,width + paddingX * 2, font.getStringHeight(text) / 2.15F + paddingY * 2)
-                        .round(2.5F).color(ColorUtil.getRect(0.7F)).build());
+                if (Hud.getInstance().liquidGlassSetting.isValue()) {
+                    GlassPipeline.draw(matrix.peek().getPositionMatrix(), x - paddingX, heightStart - paddingY, width + paddingX * 2, font.getStringHeight(text) / 2.15F + paddingY * 2, 2.5f, 4f, 2.5f, 0f, new Color(255, 255, 255, 40), alpha, 0f);
+                } else {
+                    blur.render(ShapeProperties.create(matrix,x - paddingX,heightStart - paddingY,width + paddingX * 2, font.getStringHeight(text) / 2.15F + paddingY * 2)
+                            .round(2.5F).color(ColorUtil.getRect(0.7F)).build());
+                }
                 font.drawText(matrix, text, x, heightStart + 2.5F);
             });
         }
@@ -76,16 +87,26 @@ public class HotBar extends AbstractDraggable {
             float width = font.getStringWidth(text);
             int x = (int) (scaledWidth - width / 2);
             MathUtil.setAlpha(alpha, () -> {
-                blur.render(ShapeProperties.create(matrix,x - paddingX,heightStart - paddingY - 17,width + paddingX * 2, font.getStringHeight(text) / 2.15F + paddingY * 2)
-                        .round(2.5F).color(ColorUtil.getRect(0.7F)).build());
+                if (Hud.getInstance().liquidGlassSetting.isValue()) {
+                    GlassPipeline.draw(matrix.peek().getPositionMatrix(), x - paddingX, heightStart - paddingY - 17, width + paddingX * 2, font.getStringHeight(text) / 2.15F + paddingY * 2, 2.5f, 4f, 2.5f, 0f, new Color(255, 255, 255, 40), alpha, 0f);
+                } else {
+                    blur.render(ShapeProperties.create(matrix,x - paddingX,heightStart - paddingY - 17,width + paddingX * 2, font.getStringHeight(text) / 2.15F + paddingY * 2)
+                            .round(2.5F).color(ColorUtil.getRect(0.7F)).build());
+                }
                 font.drawText(matrix, text, x, heightStart - 14.5F);
             });
         }
     }
 
     public void drawStack(DrawContext context, ItemStack stack, float x, float y, boolean offHand) {
-        if (offHand) blur.render(ShapeProperties.create(context.getMatrices(), x - 2.5F, y - 2.5F, 23, 23)
-                .round(3).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        if (offHand) {
+            if (Hud.getInstance().liquidGlassSetting.isValue()) {
+                GlassPipeline.draw(context.getMatrices().peek().getPositionMatrix(), x - 2.5F, y - 2.5F, 23, 23, 3f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+            } else {
+                blur.render(ShapeProperties.create(context.getMatrices(), x - 2.5F, y - 2.5F, 23, 23)
+                        .round(3).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+            }
+        }
         Render2DUtil.defaultDrawStack(context, stack, x, y, false, true, 1);
     }
 }

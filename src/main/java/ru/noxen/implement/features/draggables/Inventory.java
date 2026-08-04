@@ -10,7 +10,10 @@ import ru.noxen.api.system.shape.ShapeProperties;
 import ru.noxen.common.util.color.ColorUtil;
 import ru.noxen.common.util.entity.PlayerIntersectionUtil;
 import ru.noxen.common.util.render.Render2DUtil;
+import ru.noxen.common.util.render.GlassPipeline;
+import ru.noxen.implement.features.modules.render.Hud;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -36,10 +39,15 @@ public class Inventory extends AbstractDraggable {
     public void drawDraggable(DrawContext context) {
         MatrixStack matrix = context.getMatrices();
 
-        blur.render(ShapeProperties.create(matrix, getX(), getY(), getWidth(), 17.5F)
-                .round(5,0,5,0).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRectDarker(0.9F)).build());
-        blur.render(ShapeProperties.create(matrix, getX(), getY() + 17, getWidth(), getHeight() - 17)
-                .quality(25).round(0,5,0,5).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        if (Hud.getInstance().liquidGlassSetting.isValue()) {
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY(), getWidth(), 17.5F, 5f, 5f, 3f, 0f, new Color(255, 255, 255, 45), 0.9f, 0f);
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY() + 17, getWidth(), getHeight() - 17, 5f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+        } else {
+            blur.render(ShapeProperties.create(matrix, getX(), getY(), getWidth(), 17.5F)
+                    .round(5,0,5,0).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRectDarker(0.9F)).build());
+            blur.render(ShapeProperties.create(matrix, getX(), getY() + 17, getWidth(), getHeight() - 17)
+                    .quality(25).round(0,5,0,5).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        }
 
         Fonts.getSize(15, Fonts.Type.DEFAULT).drawCenteredString(matrix, getName(), getX() + getWidth() / 2F, getY() + 7, ColorUtil.getText());
 

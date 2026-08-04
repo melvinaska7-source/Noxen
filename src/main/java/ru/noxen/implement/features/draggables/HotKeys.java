@@ -11,8 +11,11 @@ import ru.noxen.common.util.color.ColorUtil;
 import ru.noxen.common.util.math.MathUtil;
 import ru.noxen.common.util.other.StringUtil;
 import ru.noxen.common.util.entity.PlayerIntersectionUtil;
+import ru.noxen.common.util.render.GlassPipeline;
 import ru.noxen.core.Main;
+import ru.noxen.implement.features.modules.render.Hud;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +44,16 @@ public class HotKeys extends AbstractDraggable {
         FontRenderer font = Fonts.getSize(15, Fonts.Type.DEFAULT);
         FontRenderer fontModule = Fonts.getSize(13, Fonts.Type.DEFAULT);
 
-        blur.render(ShapeProperties.create(matrix, getX(), getY(), getWidth(), 17.5F)
-                .round(4,0,4,0).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRectDarker(0.9F)).build());
+        if (Hud.getInstance().liquidGlassSetting.isValue()) {
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY(), getWidth(), 17.5F, 4f, 5f, 3f, 0f, new Color(255, 255, 255, 45), 0.9f, 0f);
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY() + 17, getWidth(), getHeight() - 17, 4f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+        } else {
+            blur.render(ShapeProperties.create(matrix, getX(), getY(), getWidth(), 17.5F)
+                    .round(4,0,4,0).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRectDarker(0.9F)).build());
 
-        blur.render(ShapeProperties.create(matrix, getX(), getY() + 17, getWidth(), getHeight() - 17)
-                .round(0,4,0,4).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+            blur.render(ShapeProperties.create(matrix, getX(), getY() + 17, getWidth(), getHeight() - 17)
+                    .round(0,4,0,4).softness(1).thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        }
 
         font.drawString(matrix, getName(), (int) (centerX - font.getStringWidth(getName()) / 2), getY() + 7, ColorUtil.getText());
 

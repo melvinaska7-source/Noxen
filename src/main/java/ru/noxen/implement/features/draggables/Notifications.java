@@ -25,10 +25,12 @@ import ru.noxen.common.util.color.ColorUtil;
 import ru.noxen.common.util.math.MathUtil;
 import ru.noxen.common.util.entity.PlayerIntersectionUtil;
 import ru.noxen.common.util.other.Instance;
+import ru.noxen.common.util.render.GlassPipeline;
 import ru.noxen.implement.events.container.SetScreenEvent;
 import ru.noxen.implement.events.packet.PacketEvent;
 import ru.noxen.implement.features.modules.render.Hud;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -117,8 +119,12 @@ public class Notifications extends AbstractDraggable {
             float startX = getX() + (getWidth() - width) / 2;
 
             MathUtil.setAlpha(anim, () -> {
-                blur.render(ShapeProperties.create(matrix, startX, startY, width, getHeight()).round(3)
-                        .outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+                if (Hud.getInstance().liquidGlassSetting.isValue()) {
+                    GlassPipeline.draw(matrix.peek().getPositionMatrix(), startX, startY, width, getHeight(), 3f, 4f, 2.5f, 0f, new Color(255, 255, 255, 40), anim, 0f);
+                } else {
+                    blur.render(ShapeProperties.create(matrix, startX, startY, width, getHeight()).round(3)
+                            .outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+                }
                 font.drawText(matrix, notification.text, (int) (startX + offsetX), startY + 6.5F);
             });
             offsetY += (getHeight() + 3) * anim;

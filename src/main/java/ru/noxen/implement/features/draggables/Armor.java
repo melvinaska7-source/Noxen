@@ -14,11 +14,13 @@ import ru.noxen.api.feature.draggable.AbstractDraggable;
 import ru.noxen.api.system.shape.ShapeProperties;
 import ru.noxen.common.util.color.ColorUtil;
 import ru.noxen.common.util.render.Render2DUtil;
+import ru.noxen.common.util.render.GlassPipeline;
 import ru.noxen.common.util.render.ScissorManager;
 import ru.noxen.common.util.render.Stencil;
 import ru.noxen.core.Main;
 import ru.noxen.implement.features.modules.render.Hud;
 
+import java.awt.Color;
 import java.util.Objects;
 
 public class Armor extends AbstractDraggable {
@@ -40,8 +42,12 @@ public class Armor extends AbstractDraggable {
             setX(context.getScaledWindowWidth() / 2 + handX);
             setY(context.getScaledWindowHeight() - 27);
 
-            blur.render(ShapeProperties.create(matrix, getX() - 0.5F, getY() - 0.5F, getWidth() + 1,23)
-                    .round(3).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+            if (Hud.getInstance().liquidGlassSetting.isValue()) {
+                GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX() - 0.5F, getY() - 0.5F, getWidth() + 1, 23, 3f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+            } else {
+                blur.render(ShapeProperties.create(matrix, getX() - 0.5F, getY() - 0.5F, getWidth() + 1,23)
+                        .round(3).thickness(2).softness(1).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+            }
             drawArmorStacks(context,3,3);
         } else {
             Sprite sprite = context.guiAtlasManager.getSprite(InGameHud.HOTBAR_TEXTURE);

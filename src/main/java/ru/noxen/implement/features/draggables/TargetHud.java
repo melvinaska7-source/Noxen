@@ -35,9 +35,12 @@ import ru.noxen.common.util.math.MathUtil;
 import ru.noxen.common.util.other.StopWatch;
 import ru.noxen.common.util.entity.PlayerIntersectionUtil;
 import ru.noxen.common.util.render.Render2DUtil;
+import ru.noxen.common.util.render.GlassPipeline;
 import ru.noxen.common.util.render.ScissorManager;
 import ru.noxen.core.Main;
+import ru.noxen.implement.features.modules.render.Hud;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -91,8 +94,12 @@ public class TargetHud extends AbstractDraggable {
         String stringHp = PlayerIntersectionUtil.getHealthString(hp);
         health = MathHelper.clamp(MathUtil.interpolateSmooth(1, health, Math.round(hp / lastTarget.getMaxHealth() * widthHp)), 2, widthHp);
 
-        blur.render(ShapeProperties.create(matrix, getX(), getY(), getWidth(), getHeight()).round(5).softness(1)
-                .thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        if (Hud.getInstance().liquidGlassSetting.isValue()) {
+            GlassPipeline.draw(matrix.peek().getPositionMatrix(), getX(), getY(), getWidth(), getHeight(), 5f, 5f, 3f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+        } else {
+            blur.render(ShapeProperties.create(matrix, getX(), getY(), getWidth(), getHeight()).round(5).softness(1)
+                    .thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+        }
 
         if (font.getStringWidth(lastTarget.getName().getString()) > 60) {
             ScissorManager scissorManager = Main.getInstance().getScissorManager();
@@ -122,8 +129,12 @@ public class TargetHud extends AbstractDraggable {
 
             matrix.push();
             matrix.translate(x, y, -200);
-            blur.render(ShapeProperties.create(matrix, 0, 0, items.size() * 11, 11).round(2.5F).softness(1)
-                    .thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+            if (Hud.getInstance().liquidGlassSetting.isValue()) {
+                GlassPipeline.draw(matrix.peek().getPositionMatrix(), 0, 0, items.size() * 11, 11, 2.5f, 4f, 2.5f, 0f, new Color(255, 255, 255, 40), 0.9f, 0f);
+            } else {
+                blur.render(ShapeProperties.create(matrix, 0, 0, items.size() * 11, 11).round(2.5F).softness(1)
+                        .thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+            }
 
             for (ItemStack stack : items) {
                 Render2DUtil.defaultDrawStack(context, stack, itemX += 11, 0.5F, false, true, 0.5F);
@@ -149,8 +160,12 @@ public class TargetHud extends AbstractDraggable {
             ScissorManager scissorManager = Main.getInstance().getScissorManager();
             scissorManager.push(matrix.peek().getPositionMatrix(), getX() - 50, getY(), 50, getHeight());
             MathUtil.setAlpha(anim, () -> {
-                blur.render(ShapeProperties.create(matrix, x, y, size, size).round(12).softness(1)
-                        .thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+                if (Hud.getInstance().liquidGlassSetting.isValue()) {
+                    GlassPipeline.draw(matrix.peek().getPositionMatrix(), x, y, size, size, 12f, 4f, 2.5f, 0f, new Color(255, 255, 255, 40), anim, 0f);
+                } else {
+                    blur.render(ShapeProperties.create(matrix, x, y, size, size).round(12).softness(1)
+                            .thickness(2).outlineColor(ColorUtil.getOutline()).color(ColorUtil.getRect(0.7F)).build());
+                }
 
                 arc.render(ShapeProperties.create(matrix, x, y, size, size).round(0.4F).thickness(0.2f).end(progress)
                         .color(ColorUtil.fade(0), ColorUtil.fade(200), ColorUtil.fade(0), ColorUtil.fade(200)).build());
