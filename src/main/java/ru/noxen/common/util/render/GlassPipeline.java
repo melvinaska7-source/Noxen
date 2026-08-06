@@ -57,10 +57,23 @@ public class GlassPipeline implements QuickImports {
                 .round(radius)
                 .softness(1f)
                 .thickness(0f)
-                .quality(Math.max(blurAmount, 0.5f))
+                // blurAmount from call sites (e.g. 4-6) was tuned for a different
+                // shader; multiplied up here so the panel actually reads as blurred
+                // rather than just faintly tinted.
+                .quality(Math.max(blurAmount * 5f, 4f))
                 .color(packedTint)
                 .build();
 
+        // blur is a single shared instance used by every panel in the project
+        // (glass and non-glass alike), so set distortion/shine only for this
+        // draw and reset them right after - otherwise a later plain panel this
+        // same frame would inherit our glass settings.
+        blur.distortion = Math.max(distortion, 0f);
+        // every current caller passes shine=0, but the rim-light highlight is
+        // what actually reads as "glass" to the eye - give it a small floor.
+        blur.shine = Math.max(shine, 1f);
         blur.render(props);
+        blur.distortion = 0f;
+        blur.shine = 0f;
     }
 }

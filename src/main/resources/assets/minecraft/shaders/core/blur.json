@@ -24,6 +24,8 @@
     { "name": "location", "type": "float", "count": 2, "values": [ 1.0, 1.0 ] },
     { "name": "radius", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] },
     { "name": "thickness", "type": "float", "count": 1, "values": [ 1.0 ] },
-    { "name": "softness", "type": "float", "count": 1, "values": [ 1.0 ] }
+    { "name": "softness", "type": "float", "count": 1, "values": [ 1.0 ] },
+    { "name": "distortion", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "shine", "type": "float", "count": 1, "values": [ 0.0 ] }
   ]
 }

@@ -22,6 +22,8 @@ public class Blur implements Shape, QuickImports {
     private final ShaderProgramKey SHADER_KEY = new ShaderProgramKey(Identifier.of("minecraft", "core/blur"), VertexFormats.POSITION, Defines.EMPTY);
     public Framebuffer input;
     public Vector2f resolution = new Vector2f();
+    public float distortion = 0f;
+    public float shine = 0f;
 
     @Override
     public void render(ShapeProperties shape) {
@@ -60,6 +62,8 @@ public class Blur implements Shape, QuickImports {
         shader.getUniformOrDefault("color4").set(ColorUtil.redf(shape.getColor().w), ColorUtil.greenf(shape.getColor().w), ColorUtil.bluef(shape.getColor().w), ColorUtil.alphaf(ColorUtil.multAlpha(shape.getColor().w, alpha)));
         shader.getUniformOrDefault("outlineColor").set(ColorUtil.redf(shape.getOutlineColor()), ColorUtil.greenf(shape.getOutlineColor()), ColorUtil.bluef(shape.getOutlineColor()), ColorUtil.alphaf(ColorUtil.multAlpha(shape.getOutlineColor(), alpha)));
         shader.getUniformOrDefault("InputResolution").set(resolution.x, resolution.y);
+        shader.getUniformOrDefault("distortion").set(distortion);
+        shader.getUniformOrDefault("shine").set(shine);
 
         BufferRenderer.drawWithGlobalProgram(buffer.end());
         RenderSystem.disableBlend();
