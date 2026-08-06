@@ -42,7 +42,7 @@ public class Hud extends Module {
 
     public Hud() {
         super("Hud", ModuleCategory.RENDER);
-        setup(colorSetting, liquidGlassSetting, interfaceSettings, notificationSettings, preSetting, playSetting, nextSetting);
+        setup(colorSetting, interfaceSettings, notificationSettings, preSetting, playSetting, nextSetting);
     }
 
     @EventHandler
