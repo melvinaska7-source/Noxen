@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import ru.noxen.api.event.EventHandler;
 import ru.noxen.api.feature.module.setting.implement.BindSetting;
+import ru.noxen.api.feature.module.setting.implement.BooleanSetting;
 import ru.noxen.api.feature.module.setting.implement.ColorSetting;
 import ru.noxen.api.feature.module.setting.implement.MultiSelectSetting;
 import ru.noxen.api.feature.module.Module;
@@ -28,6 +29,8 @@ public class Hud extends Module {
     public ColorSetting colorSetting = new ColorSetting("Client Color", "Select your client's color")
             .setColor(0xFF6C9AFD).presets(0xFF6C9AFD, 0xFF8C7FFF, 0xFFFFA576, 0xFFFF7B7B);
 
+    public BooleanSetting liquidGlassSetting = new BooleanSetting("Liquid Glass", "Makes ClickGUI and HUD panels a blurred glass look");
+
     BindSetting preSetting = new BindSetting("Previous Audio", "Turn on previous audio")
             .visible(()-> interfaceSettings.isSelected("Media Player"));
 
@@ -39,7 +42,7 @@ public class Hud extends Module {
 
     public Hud() {
         super("Hud", ModuleCategory.RENDER);
-        setup(colorSetting, interfaceSettings, notificationSettings, preSetting, playSetting, nextSetting);
+        setup(colorSetting, liquidGlassSetting, interfaceSettings, notificationSettings, preSetting, playSetting, nextSetting);
     }
 
     @EventHandler
