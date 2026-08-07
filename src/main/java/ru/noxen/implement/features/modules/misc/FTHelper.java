@@ -52,7 +52,7 @@ public class FTHelper extends Module {
     );
 
     Map<ThrowableItem, BindSetting> binds = new LinkedHashMap<>();
-    GroupSetting bindsGroup = new GroupSetting("Binds, "Customize settings for each FunTime item");
+    GroupSetting bindsGroup = new GroupSetting("Binds", "Customize settings for each FunTime item");
 
     public FTHelper() {
         super("FTHelper", "Uses FunTime items with keybinds", ModuleCategory.MISC);

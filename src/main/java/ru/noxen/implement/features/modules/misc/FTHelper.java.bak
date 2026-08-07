@@ -52,15 +52,15 @@ public class FTHelper extends Module {
     );
 
     Map<ThrowableItem, BindSetting> binds = new LinkedHashMap<>();
-    GroupSetting bindsGroup = new GroupSetting("Кнопки предметов", "Настройка кнопок для каждого предмета FunTime");
+    GroupSetting bindsGroup = new GroupSetting("Binds, "Customize settings for each FunTime item");
 
     public FTHelper() {
-        super("FTHelper", "Использует предметы FunTime по кнопкам биндов", ModuleCategory.MISC);
+        super("FTHelper", "Uses FunTime items with keybinds", ModuleCategory.MISC);
 
         Setting[] settings = new Setting[items.size()];
         for (int i = 0; i < items.size(); i++) {
             ThrowableItem item = items.get(i);
-            BindSetting bind = new BindSetting(item.label(), "Использовать \"" + item.label() + "\" по нажатию");
+            BindSetting bind = new BindSetting(item.label(), "Use \"" + item.label() + "\" on click");
             binds.put(item, bind);
             settings[i] = bind;
         }
