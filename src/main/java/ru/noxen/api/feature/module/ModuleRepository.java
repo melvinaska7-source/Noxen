@@ -58,7 +58,8 @@ public class ModuleRepository {
                 new InvSort(),
                 new ShiftTap(),
                 new KillEffect(),
-                new FTHelper()
+                new FTHelper(),
+                new RadiusHelper()
         );
     }
 
