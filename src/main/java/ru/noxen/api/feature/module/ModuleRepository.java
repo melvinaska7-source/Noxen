@@ -57,7 +57,8 @@ public class ModuleRepository {
                 new SkyShader(),
                 new InvSort(),
                 new ShiftTap(),
-                new KillEffect()
+                new KillEffect(),
+                new FTHelper()
         );
     }
 
