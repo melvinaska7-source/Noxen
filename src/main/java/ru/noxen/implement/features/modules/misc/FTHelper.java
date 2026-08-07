@@ -10,6 +10,7 @@ import ru.noxen.api.feature.module.Module;
 import ru.noxen.api.feature.module.ModuleCategory;
 import ru.noxen.api.feature.module.setting.Setting;
 import ru.noxen.api.feature.module.setting.implement.BindSetting;
+import ru.noxen.api.feature.module.setting.implement.GroupSetting;
 import ru.noxen.common.util.entity.PlayerInventoryUtil;
 import ru.noxen.implement.events.keyboard.KeyEvent;
 
@@ -21,6 +22,10 @@ import java.util.Map;
  * FTHelper — использует кастомные предметы FunTime по нажатию привязанной клавиши.
  * Предмет ищется по вхождению названия в имя стака (лор/кастом-нейм сервера),
  * с проверкой кулдауна базового ванильного предмета, на который "скинен" кастомный.
+ *
+ * Все бинды свёрнуты в один GroupSetting ("Кнопки предметов") — чтобы не раздувать
+ * высоту модуля в общем списке настроек и не упираться в баг скролла CategoryComponent
+ * (он не рассчитан на модули с большим количеством строк-настроек).
  */
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FTHelper extends Module {
@@ -47,6 +52,7 @@ public class FTHelper extends Module {
     );
 
     Map<ThrowableItem, BindSetting> binds = new LinkedHashMap<>();
+    GroupSetting bindsGroup = new GroupSetting("Кнопки предметов", "Настройка кнопок для каждого предмета FunTime");
 
     public FTHelper() {
         super("FTHelper", "Использует предметы FunTime по кнопкам биндов", ModuleCategory.MISC);
@@ -54,11 +60,12 @@ public class FTHelper extends Module {
         Setting[] settings = new Setting[items.size()];
         for (int i = 0; i < items.size(); i++) {
             ThrowableItem item = items.get(i);
-            BindSetting bind = new BindSetting("Кнопка: " + item.label(), "Использовать \"" + item.label() + "\" по нажатию");
+            BindSetting bind = new BindSetting(item.label(), "Использовать \"" + item.label() + "\" по нажатию");
             binds.put(item, bind);
             settings[i] = bind;
         }
-        setup(settings);
+        bindsGroup.settings(settings);
+        setup(bindsGroup);
     }
 
     @EventHandler
